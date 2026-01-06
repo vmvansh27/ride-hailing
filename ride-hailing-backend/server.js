@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+// Load Sequelize models + relationships
+require("./models");
 // Routes
 app.use("/users", require("./routes/users"));
 app.use("/vehicles", require("./routes/vehicles"));

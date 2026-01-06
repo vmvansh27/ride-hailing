@@ -1,24 +1,26 @@
-const db = require("../db");
-exports.addVehicle = (req, res) => {
-    const { driver_id, make, model, plate_number, color, year } = req.body;
-    db.query(
-"INSERT INTO vehicles(driver_id,make,model,plate_number,color,year) VALUES (?,?,?,?,?,?)",
-[driver_id, make, model, plate_number, color, year],
-(err) => {
-if (err) {
-return res.json({ success: false, message: "Vehicle already assigned or plate exists" });
-}
-res.json({ success: true, message: "Vehicle added" });
-}
-);
-};
-exports.getVehicle = (req, res) => {
-db.query(
-"SELECT * FROM vehicles WHERE driver_id=?",
-[req.params.driver_id],
-(err, rows) => {
-    if (err) return res.json({ success: false });
-    res.json(rows[0] || {});
+const { Vehicle } = require("../models");
+exports.addVehicle = async (req, res) => {
+    try {
+        await Vehicle.create({
+            driver_id: req.body.driver_id,
+            make: req.body.make,
+            model: req.body.model,
+            plate_number: req.body.plate_number,
+            color: req.body.color,
+            year: req.body.year
+        });
+        res.json({ success: true, message: "Vehicle added" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
     }
-);
+};
+exports.getVehicle = async (req, res) => {
+    try {
+        const vehicle = await Vehicle.findOne({
+            where: { driver_id: req.params.driver_id }
+        });
+        res.json(vehicle || {});
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };

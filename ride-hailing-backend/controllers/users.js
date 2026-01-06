@@ -1,34 +1,29 @@
-const db = require("../db");
 const bcrypt = require("bcrypt");
-exports.register = (req, res) => {
-    const { full_name, email, phone, password, role, license_number } = req.body;
-    const hashed = bcrypt.hashSync(password, 10);
-db.query(
-"INSERT INTO users(full_name,email,phone,password,role,license_number) VALUES (?,?,?,?,?,?)",
-[full_name, email, phone, hashed, role, license_number],
-(err) => {
-if (err) {
-return res.json({ success: false, message: "Email or license already exists" });
-}
-res.json({ success: true, message: "User created" });
-}
-);
+const { User } = require("../models");
+exports.register = async (req, res) => {
+    try {
+        const hashed = bcrypt.hashSync(req.body.password, 10);
+        await User.create({
+            full_name: req.body.full_name,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: hashed,
+            role: req.body.role,
+            license_number: req.body.license_number
+        });
+        res.json({ success: true, message: "User created" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.login = (req, res) => {
-    const { email, password } = req.body;
-db.query("SELECT * FROM users WHERE email=?", [email], (err, rows) => {
-if (err || rows.length === 0) {
-return res.json({ success: false, message: "Invalid email or password" });
-}
-const user = rows[0];
-const match = bcrypt.compareSync(password, user.password);
-if (!match) {
-return res.json({ success: false, message: "Invalid email or password" });
-}
-res.json({
-success: true,
-message: "Login successful",
-user,
-});
-});
+exports.login = async (req, res) => {
+    try {
+        const user = await User.findOne({ where: { email: req.body.email } });
+        if (!user) return res.json({ success: false, message: "Invalid login" });
+        const match = bcrypt.compareSync(req.body.password, user.password);
+        if (!match) return res.json({ success: false, message: "Invalid login" });
+        res.json({ success: true, user });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };

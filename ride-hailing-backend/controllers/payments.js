@@ -1,13 +1,14 @@
-const db = require("../db");
-exports.pay = (req, res) => {
-    const { ride_id, amount, method } = req.body;
-    db.query(
-"INSERT INTO payments(ride_id,amount,method,status) VALUES (?,?,?,?)",
-[ride_id, amount, method, "completed"],
-(err) => {
-    if (err) return res.json({ success: false });
-    res.json({ success: true, message: "Payment processed" });
-}
-);
+const { Payment } = require("../models");
+exports.pay = async (req, res) => {
+    try {
+        await Payment.create({
+            ride_id: req.body.ride_id,
+            amount: req.body.amount,
+            method: req.body.method,
+            status: "completed"
+        });
+        res.json({ success: true, message: "Payment processed" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-

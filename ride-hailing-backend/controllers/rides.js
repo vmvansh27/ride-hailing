@@ -1,79 +1,80 @@
-const db = require("../db");
-exports.requestRide = (req, res) => {
-    const { rider_id, pickup_location, drop_location } = req.body;
-    db.query(
-"INSERT INTO rides(rider_id,pickup_location,drop_location,status) VALUES (?,?,?,?)",
-[rider_id, pickup_location, drop_location, "requested"],
-(err) => {
-    if (err) return res.json({ success: false });
-    res.json({
-success: true,
-message: "Ride requested",
-});
-}
-);
+const { Ride } = require("../models");
+exports.requestRide = async (req, res) => {
+    try {
+        await Ride.create({
+            rider_id: req.body.rider_id,
+            pickup_location: req.body.pickup_location,
+            drop_location: req.body.drop_location,
+            status: "requested"
+        });
+        res.json({ success: true, message: "Ride requested" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.listRides = (req, res) => {
-db.query("SELECT * FROM rides WHERE status='requested'", (err, rows) => {
-
-    if (err) return res.json({ success: false });
-    res.json(rows);
-});
+exports.listRides = async (req, res) => {
+    try {
+        const rides = await Ride.findAll({
+            where: { status: "requested" }
+        });
+        res.json(rides);
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.acceptRide = (req, res) => {
-const ride_id = req.params.id;
-
-const { driver_id } = req.body;
-
-db.query(
-"UPDATE rides SET driver_id=?, status='ongoing' WHERE ride_id=? AND status='requested'",
-[driver_id, ride_id],
-(err) => {
-
-    if (err) return res.json({ success: false });
-
-    res.json({ success: true, message: "Ride accepted" });
-}
-);
+exports.acceptRide = async (req, res) => {
+    try {
+        await Ride.update(
+            {
+                driver_id: req.body.driver_id,
+                status: "ongoing"
+            },
+            { where: { ride_id: req.params.id } }
+        );
+        res.json({ success: true, message: "Ride accepted" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.startRide = (req, res) => {
-const ride_id = req.params.id;
-db.query(
-"UPDATE rides SET start_time=NOW(), status='ongoing' WHERE ride_id=?",
-[ride_id],
-(err) => {
-
-    if (err) return res.json({ success: false });
-
-    res.json({ success: true, message: "Ride started" });
-}
-);
+exports.startRide = async (req, res) => {
+    try {
+        await Ride.update(
+            {
+                start_time: new Date(),
+                status: "ongoing"
+            },
+            { where: { ride_id: req.params.id } }
+        );
+        res.json({ success: true, message: "Ride started" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.completeRide = (req, res) => {
-const ride_id = req.params.id;
-
-const { fare } = req.body;
-db.query(
-"UPDATE rides SET end_time=NOW(), fare=?, status='completed' WHERE ride_id=?",
-[fare, ride_id],
-(err) => {
-
-    if (err) return res.json({ success: false });
-
-    res.json({ success: true, message: "Ride completed" });
-}
-);
+exports.completeRide = async (req, res) => {
+    try {
+        await Ride.update(
+            {
+                end_time: new Date(),
+                fare: req.body.fare,
+                status: "completed"
+            },
+            { where: { ride_id: req.params.id } }
+        );
+        res.json({ success: true, message: "Ride completed" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
+    }
 };
-exports.cancelRide = (req, res) => {
-const ride_id = req.params.id;
-db.query(
-"UPDATE rides SET status='cancelled' WHERE ride_id=?",
-[ride_id],
-(err) => {
+exports.cancelRide = async (req, res) => {
+    try {
+        await Ride.update(
+            { status: "cancelled" },
+            { where: { ride_id: req.params.id } }
+        );
+        res.json({ success: true, message: "Ride cancelled" });
+    } catch (err) {
+        res.json({ success: false, message: err.message });
 
-    if (err) return res.json({ success: false });
 
-    res.json({ success: true, message: "Ride cancelled" });
-}
-);
+    }
 };
