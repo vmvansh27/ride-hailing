@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const rides = require("../controllers/rides");
+const rides = require("../rest/controllers/rides");
 router.post("/request", rides.requestRide);
 router.get("/", rides.listRides);
 router.patch("/:id/accept", rides.acceptRide);
