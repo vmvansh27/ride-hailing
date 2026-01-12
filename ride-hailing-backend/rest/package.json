@@ -11,7 +11,8 @@
         "bcrypt": "^5.1.0",
         "express": "^4.18.2",
         "mysql2": "^3.6.0",
-        "sequelize": "^6.37.7"
+        "sequelize": "^6.37.7",
+        "cors": ""
     },
     "devDependencies": {
         "nodemon": "^3.0.2"

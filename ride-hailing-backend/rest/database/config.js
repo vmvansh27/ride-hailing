@@ -1,8 +1,9 @@
 
+import {PASSWD} from './credentials.js';
 const config = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "toor",
+    PASSWORD: PASSWD,
     DB: "rideHailing",
     dialect: "mysql"
 };
