@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions 
+    name="RatingService"
+    targetNamespace="http://example.com/ratings"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://example.com/ratings"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <types>
+        <xsd:schema targetNamespace="http://example.com/ratings">
+            <xsd:element name="submitRatingRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ride_id" type="xsd:int"/>
+                        <xsd:element name="given_by" type="xsd:int"/>
+                        <xsd:element name="given_to" type="xsd:int"/>
+                        <xsd:element name="score" type="xsd:int"/>
+                        <xsd:element name="comment" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="submitRatingResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="status" type="xsd:string"/>
+                        <xsd:element name="message" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="SubmitRatingRequest">
+        <part name="parameters" element="tns:submitRatingRequest"/>
+    </message>
+    <message name="SubmitRatingResponse">
+        <part name="parameters" element="tns:submitRatingResponse"/>
+    </message>
+
+    <portType name="RatingPortType">
+        <operation name="submitRating">
+            <input message="tns:SubmitRatingRequest"/>
+            <output message="tns:SubmitRatingResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="RatingBinding" type="tns:RatingPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="submitRating">
+            <soap:operation soapAction="submitRating"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="RatingService">
+        <port name="RatingPort" binding="tns:RatingBinding">
+            <soap:address location="http://localhost:3001/soap/rating"/>
+        </port>
+    </service>
+</definitions>
