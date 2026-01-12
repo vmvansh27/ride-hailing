@@ -1,4 +1,3 @@
-// Export schema and resolvers from one place
 
 import schema from "./schema.js";
 import { rideQueries, rideMutations } from "./ride.resolver.js";

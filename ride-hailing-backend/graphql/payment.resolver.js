@@ -7,7 +7,7 @@ import {
 
 import { Payment } from "../rest/models/index.js";
 
-// Payment Type
+
 export const PaymentType = new GraphQLObjectType({
     name: "Payment",
     fields: () => ({
@@ -19,7 +19,7 @@ export const PaymentType = new GraphQLObjectType({
     }),
 });
 
-// QUERY
+
 export const paymentQueries = {
     payment: {
         type: PaymentType,

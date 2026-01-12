@@ -8,7 +8,7 @@ import {
 
 import { Ride } from "../rest/models/index.js";
 
-// Ride Type
+
 export const RideType = new GraphQLObjectType({
     name: "Ride",
     fields: () => ({
