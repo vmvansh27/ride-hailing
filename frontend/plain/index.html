@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+        #hidden { display: none}
+        </style>
+    </head>
+    
+    <title>
+        Ride.ly
+    </title>
+
+    <body>
+        <div id="main-page">
+            <h1>Welcome to Ridely!</h1>
+            <form onsubmit="displayLogin()">
+            <p>
+            <input type="submit" value="Login to begin" />
+            </p>
+            </form>
+        </div>
+        <script src="scripts/index.js"></script>
+    </body>
+</html>
+<div id="hidden">
+    <div id="signin-register">
+        <p>Sign-in:</p>
+        <forms id="info-form">
+            <p>
+            <input type="text" id="username-input-signin" placeholder="Enter your email or phone" required autofocus/>
+            </p>
+            <p>
+            <input type="password" id="password-input-signin" placeholder="Password" />
+            </p>
+            <p>
+            <button type="submit" id="submit-input-signin">Sign-in</button>
+            <button type="submit" id="submit-input-register">Register</button>
+            </p>
+        </forms>
+    </div>
+
+    <div id="role-assignment">
+        <p>I am a: </p>
+        <form id="role-form" onsubmit="handleRoleFormSubmit()">
+            <p>
+            <input type="radio" id="rider" value="Rider" name="role">
+            <label for="Rider">Rider</label> <br/>
+            <input type="radio" id="driver" value="Driver" name="role">
+            <label for="Driver">Driver</label> 
+            <br/>
+            <input type="submit" id="roles-submit" value="Submit"/>
+            </p>
+        </form>
+    </div>
+
+    <div id="user-dashboard">
+        <h1>User dashboard</h1>
+
+    </div>
+
+    <div id="driver-dashboard">
+        <h1>Driver dashboard</h1>
+        <article>Vehicles</article>
+        <article>Ratings</article>
+    </div>
+
+</div>
