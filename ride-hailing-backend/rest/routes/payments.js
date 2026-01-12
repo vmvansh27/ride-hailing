@@ -1,5 +1,17 @@
-const express = require("express");
+// const express = require("express");
+// const router = express.Router();
+// const vehicles = require("../rest/controllers/vehicles");
+// router.post("/", vehicles.addVehicle);
+// router.get("/:driver_id", vehicles.getVehicle);
+// module.exports = router;
+
+
+import express from "express";
+import { pay } from "../controllers/payments.js";
+
 const router = express.Router();
-const payments = require("../controllers/payments");
-router.post("/", payments.pay);
-module.exports = router;
+
+// Process payment
+router.post("/", pay);
+
+export default router;
