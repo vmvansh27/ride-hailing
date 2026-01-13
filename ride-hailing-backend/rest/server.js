@@ -23,6 +23,8 @@
 
 import express from "express";
 import "./models/index.js"; // Loads Sequelize + relationships
+import cors from "cors";
+
 
 import userRoutes from "./routes/users.js";
 import vehicleRoutes from "./routes/vehicles.js";
@@ -32,6 +34,7 @@ import ratingRoutes from "./routes/ratings.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use("/users", userRoutes);

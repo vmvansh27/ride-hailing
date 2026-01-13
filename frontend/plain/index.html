@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style type="text/css">
+        #hidden { display: none}
+        </style>
+    </head>
+    
+    <title>
+        Ride.ly
+    </title>
+
+    <body>
+        <div id="main-page">
+            <h1>Welcome to Ridely!</h1>
+            <form onsubmit="displayLogin()">
+            <p>
+            <input type="submit" value="Login to begin" />
+            </p>
+            </form>
+        </div>
+        <script src="scripts/index.js"></script>
+    </body>
+</html>
+<div id="hidden">
+    <div id="signin-register">
+        <h1>Sign-in</h1>
+        <forms id="info-form">
+            <p>
+            <input type="text" id="username-input-signin" placeholder="Enter your email or phone" required autofocus/>
+            </p>
+            <p>
+            <input type="password" id="password-input-signin" placeholder="Password" />
+            </p>
+            <p>
+            <button type="submit" id="submit-input-signin">Sign-in</button>
+            <button type="submit" id="submit-input-register">Register</button>
+            </p>
+        </forms>
+    </div>
+
+    <div id="role-assignment">
+        <h1>Register</h1>
+        <form id="role-form" onsubmit="handleRoleFormSubmit()">
+            <p>
+            Name: 
+            <input type="text" id="username-input" name="full_name" placeholder="Enter your name" required autofocus>
+            <br/>
+            </p>
+            <p>
+            Email:
+            <input type="text" id="email-register" name="email" placeholder="Enter your email" required/>
+            </p>
+            <p>
+            Phone:
+            <input type="text" id="phone-signin" name="phone" placeholder="Enter your phone" required/>
+            </p>
+            <p>
+            Enter a new passord:
+            <input type="password" id="password-input-signin" name="password" placeholder="Password" required/>
+            </p>
+            <p>I am a: </p>
+            <input type="radio" id="rider" value="rider" name="role">
+            <label for="Rider">Rider</label> <br/>
+            <input type="radio" id="driver" value="driver" name="role">
+            <label for="Driver">Driver</label> 
+            <br/>
+            <h4>Only for drivers</h4>
+            <p>Vehicle License Number: </p>
+            <input type="text" id="license-number-input" name="license_number" placeholder="Enter license plate number">
+            <br />
+            <input type="submit" id="roles-submit" value="Submit"/>
+            </p>
+        </form>
+    </div>
+
+    <div id="user-dashboard">
+        <h1>User dashboard</h1>
+
+    </div>
+
+    <div id="driver-dashboard">
+        <h1>Driver dashboard</h1>
+        <article>Vehicles</article>
+        <article>Ratings</article>
+    </div>
+
+</div>
