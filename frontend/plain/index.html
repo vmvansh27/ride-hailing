@@ -1,10 +1,18 @@
 <!DOCTYPE html>
+<!-- 
+index.html
+This is the main page of the Ridely SPA. This page is dynamically updated
+as the users interact with the app and navigate through different sections'.
+The entire frontend and all the sections are contained within this html file. -->
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style type="text/css">
-        #hidden { display: none}
+            /*  This in-line CSS ensures that any element with the id 'hidden' 
+                is not displayed. This mechanism is used to hide all pages 
+                except the main page by default. */
+            #hidden { display: none} 
         </style>
     </head>
     
@@ -13,26 +21,51 @@
     </title>
 
     <body>
-        <div id="main-page">
+        <div id="main-page"> 
+            <!-- 
+            The body only consists of the main landing page.
+            This is the div (with id="main-page") that is dynamically updated
+            as the user interacts with the pages. This is handled by the linked
+             javascript using DOM.
+                                  -->
             <h1>Welcome to Ridely!</h1>
-            <form onsubmit="displayLogin()">
-            <p>
-            <input type="submit" value="Login to begin" />
-            </p>
+            <form onsubmit="displayLogin()"> 
+                <!-- 
+                This form consists of a single button that calls the
+                displayLogin() function upon clicking.
+                This function is present in the linked scripts/index.js file.
+                -->
+                <p>
+                    <input type="submit" value="Login to begin" />
+                </p>
             </form>
         </div>
         <script src="scripts/index.js"></script>
     </body>
 </html>
 <div id="hidden">
+    <!--
+    This div (id="hidden") contains of all the other views (divs).
+    This div has the id "hidden" and is therefore targeted by the internal CSS
+    in the head. Its contents are hidden by default. The linked javascript 
+    accesses the different divs as per user interaction and overwrites the
+    innerHTML of the main-page div with them. This updates the main page div to
+    show the contents of different divs (therefore showing different views).
+    -->
+
     <div id="signin-register">
+    <!--
+    This div (id="signin-register") is the login/register section. Clicking the
+    register button opens the register view (id="role-assignment").
+    The form consists of client-side validation for email/phone and password.
+    -->
         <h1>Sign-in</h1>
         <forms id="info-form">
             <p>
-            <input type="text" id="username-input-signin" placeholder="Enter your email or phone" required autofocus/>
+            <input type="text" id="username-input-signin" placeholder="Enter your email or phone" required pattern=".+@.+\..+|[6-9]\d{9}" autofocus/>
             </p>
             <p>
-            <input type="password" id="password-input-signin" placeholder="Password" />
+            <input type="password" id="password-input-signin" placeholder="Password" required minlength="8" maxlength="32"/>
             </p>
             <p>
             <button type="submit" id="submit-input-signin">Sign-in</button>
@@ -42,6 +75,12 @@
     </div>
 
     <div id="role-assignment">
+    <!--
+    This div allows users to register (create an account).
+    It also let's them choose if they are a rider or driver. The form consists
+    of client-side validation for email, phone and password and license plate 
+    number in case of driver.
+    -->
         <h1>Register</h1>
         <form id="role-form" onsubmit="handleRoleFormSubmit()">
             <p>
@@ -51,15 +90,15 @@
             </p>
             <p>
             Email:
-            <input type="text" id="email-register" name="email" placeholder="Enter your email" required/>
+            <input type="text" id="email-register" name="email" placeholder="Enter your email" required pattern=".+@.+\..+" />
             </p>
             <p>
             Phone:
-            <input type="text" id="phone-signin" name="phone" placeholder="Enter your phone" required/>
+            <input type="text" id="phone-signin" name="phone" placeholder="Enter your phone" required pattern="[6-9]\d{9}"/>
             </p>
             <p>
-            Enter a new passord:
-            <input type="password" id="password-input-signin" name="password" placeholder="Password" required/>
+            Enter a new password:
+            <input type="password" id="password-input-signin" name="password" placeholder="Password" required minlength="8" maxlength="32"/>
             </p>
             <p>I am a: </p>
             <input type="radio" id="rider" value="rider" name="role">
@@ -69,7 +108,7 @@
             <br/>
             <h4>Only for drivers</h4>
             <p>Vehicle License Number: </p>
-            <input type="text" id="license-number-input" name="license_number" placeholder="Enter license plate number">
+            <input type="text" id="license-number-input" name="license_number" placeholder="E.g. AB00XY1234" pattern="[A-Z]{2}\d{2}[A-Z]{2}\d{4}">
             <br />
             <input type="submit" id="roles-submit" value="Submit"/>
             </p>
@@ -77,14 +116,68 @@
     </div>
 
     <div id="user-dashboard">
+    <!--
+    This dashboard is what appears when a user signs-in successfully.
+    -->
         <h1>User dashboard</h1>
+        <table>
+            <tr>
+            <td><button>Request a Ride</button></td>
+            </tr>
+            <tr>
+            <td><button>Cancel ongoing ride</button></td>
+            </tr>
+            <tr>
+            <td><button>Rate a ride</button></td>
+            </tr>
+        </table>
 
     </div>
 
     <div id="driver-dashboard">
+    <!--
+    This dashboard appears when a driver signs-in successfully.
+    -->
         <h1>Driver dashboard</h1>
-        <article>Vehicles</article>
-        <article>Ratings</article>
+        <table>
+            <tr>
+            <td><button>List Rides</button></td>
+            </tr>
+            <tr>
+            <td><button>Add a Vehicle</button></td>
+            </tr>
+            <tr>
+            <td><button>List registered vehicles</button></td>
+            </tr>
+            <tr>
+            <td><button>Show ratings</button></td>
+            </tr>
+        </table>
     </div>
 
+    <div id="driver-add-vehicle">
+    <!--
+    This section allows existing drivers to add another vehicle to the service.
+    -->
+        <h1>Driver dashboard</h1>
+        <h3>Add a Vehicle</h3>
+        <form>
+            <label>Vehicle Plate No.:</label>
+            <input type="text" placeholder="E.g. AB00XY1234" required pattern="[A-Z]{2}\d{2}[A-Z]{2}\d{4}" autofocus>
+            <br/>
+            <label>Vehicle Make: </label>
+            <input type="text" required>
+            <br/>
+            <label>Vehicle Model: </label>
+            <input type="text" required>
+            <br/>
+            <label>Color: </label>
+            <input type="text">
+            <br/>
+            <label>Year: </label>
+            <input type="text">
+            <br/>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </div>
