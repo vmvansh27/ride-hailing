@@ -1,4 +1,7 @@
 const handleRoleFormSubmit = async () => {
+    /*
+    handleRoleFormSubmit() is called when the register button is clicked in
+    the register form. It performs  */
     console.log("reached role form submit handler");
     conDiv = document.querySelector("#main-page");
     console.log(document.querySelector("#rider").checked);
@@ -8,20 +11,21 @@ const handleRoleFormSubmit = async () => {
     if (document.querySelector("#rider").checked){
         role = "rider";
         console.log(role);
-        displayUserDashboard(conDiv);
     }
-    if(document.querySelector("#driver").checked){
+    else if(document.querySelector("#driver").checked){
         role = "driver";
         console.log(role);
-        displayDriverDashboard(conDiv);
     }
     else {
         console.log("No option selected");
+        return;
     }
     
     postRegisterData(regForm);
 }
 const displayLogin = async () => {
+    /* displayLogin() overwrites the contents of main=page with the contents of
+       signin-register using DOM and displays the signin/register page */
     console.log("reached display login");
     var loginPage = document.querySelector("#signin-register");
     contentDiv = await document.querySelector("#main-page");
@@ -68,18 +72,11 @@ const postSignInData = async (e) => {
 
 
 const postRegisterData = async (regForm) => {
-    //const regForm = document.querySelector("#role-form");
-    /*let role = "";
-    if (document.querySelector("#rider").checked){
-        console.log("rider");
-        //displayUserDashboard(conDiv);
-        role = "rider";
-    }
-    else if(document.querySelector("#driver").checked){
-        console.log("driver");
-        //displayDriverDashboard(conDiv);
-        role = "driver";
-    }*/
+    /*
+    Gets data from the registration form and POSTs it to the REST api provided
+    by the backend. This creates a new user (updates the database).
+     */
+    console.log("POSTing register data...")
     const jsonData = buildJsonData(regForm);
     console.log(jsonData);
     const headersData = buildHeaders();
@@ -90,10 +87,15 @@ const postRegisterData = async (regForm) => {
     })
     .then((response) => response.json())
     .then((json) => console.log(json));
+    displayLogin();
 }
 
 
 const handleLogin = async (conDiv) => {
+    /* Handles the sign-in/register page and either tries signing-in or opens
+       the registration page depending on the button pressed.
+    */
+
     const infoForm = document.querySelector("#info-form");
     if(infoForm) {
         const formSignInBtn = document.querySelector("#submit-input-signin");
@@ -115,21 +117,25 @@ const handleLogin = async (conDiv) => {
 
 
 const displayDriverDashboard = async (conDiv) => {
+    // WIP: Displays driver dashboard.
     var driverDashboard = document.querySelector("#driver-dashboard");
     conDiv.innerHTML = driverDashboard.innerHTML;
 }
 
 const displayUserDashboard = async (conDiv) => {
+    // WIP: Displays user dashboard
     var userDashboard = document.querySelector("#user-dashboard");
     conDiv.innerHTML = userDashboard.innerHTML;
 }
 
 const displayRoles = async (conDiv) => {
+    // Displays registration form
     var rolesPage = document.querySelector("#role-assignment");
     conDiv.innerHTML = rolesPage.innerHTML;
 }
 
 const buildJsonData = (form) => {
+    // Helper function to build JSON data from HTML form.
     const jsonData = {};
     for(const pair of new FormData(form).entries()){
         jsonData[pair[0]] = pair[1];
@@ -141,6 +147,7 @@ const buildJsonData = (form) => {
 }
 
 const buildHeaders = (authorization = null) => {
+    // Helper function to build headers for JSON data.
     const headers = {
         "Content-Type": "application/json",
         "Authorization": (authorization) ? authorization : "Bearer TOKEN_MISSING"
