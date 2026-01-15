@@ -35,13 +35,41 @@ const displayLogin = async () => {
 }
 
 const postSignInData = async (e) => {
-    /* WIP
-    POSTs sign0in data to REST API provided by backend to check sign-in */
-    const infoForm = document.querySelector("#info-form");
     e.preventDefault();
-    displayUserDashboard(document.querySelector("#main-page"));
-    
-}
+
+    const jsonData = {
+        email: document.querySelector("#username-input-signin").value,
+        password: document.querySelector("#password-input-signin").value
+    };
+
+    const headersData = buildHeaders();
+
+    fetch("http://localhost:5000/users/login", {
+        method: "POST",
+        body: JSON.stringify(jsonData),
+        headers: headersData
+    })
+    .then(response => response.json())
+    .then(json => {
+        console.log("Login response:", json);
+
+        if (json.success) {
+            const role = json.user.role; 
+            const contentDiv = document.querySelector("#main-page");
+
+            if (role === "rider") displayUserDashboard(contentDiv);
+            else if (role === "driver") displayDriverDashboard(contentDiv);
+            else alert("Unknown role from server");
+        } else {
+            alert("Login failed: " + (json.message || "Check credentials"));
+        }
+    })
+    .catch(err => {
+        console.error("Login error:", err);
+        alert("Login error.");
+    });
+};
+
 
 const postRegisterData = async (regForm) => {
     /*
