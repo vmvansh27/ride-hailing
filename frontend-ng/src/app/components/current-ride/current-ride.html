@@ -1,0 +1,26 @@
+<div class="current-ride-container">
+  <h2>Current Ride</h2>
+
+  <!-- Loading only while API is in progress -->
+  <p *ngIf="loading">Loading current ride...</p>
+
+  <!-- When finished loading and no ride -->
+  <p class="error" *ngIf="!loading && !ride">No ongoing ride. You have completed your ride.</p>
+
+  <!-- When a ride exists -->
+  <div *ngIf="!loading && ride" class="ride-card">
+    <p><strong>Ride ID:</strong> {{ ride.ride_id }}</p>
+    <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
+    <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
+    <p><strong>Status:</strong> {{ ride.status }}</p>
+
+    <div *ngIf="!ride.start_time">
+      <button (click)="startRide()">Start Ride</button>
+    </div>
+
+    <div *ngIf="ride.start_time && ride.status === 'ongoing'">
+      <input type="number" [(ngModel)]="fare" placeholder="Enter Fare" />
+      <button (click)="completeRide()">Complete Ride</button>
+    </div>
+  </div>
+</div>

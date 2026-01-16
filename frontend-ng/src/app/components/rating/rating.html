@@ -1,0 +1,29 @@
+<div class="rating-container">
+  <h2>Rate Your Ride</h2>
+
+  <!-- Show loading -->
+  <p *ngIf="loading">Loading rating details...</p>
+
+  <!-- Show error -->
+  <p class="error" *ngIf="!loading && errorMessage">
+    {{ errorMessage }}
+  </p>
+
+  <!-- Show form -->
+  <div *ngIf="!loading && !errorMessage" class="rating-card">
+    <p><strong>Ride ID:</strong> {{ rideId }}</p>
+    <p><strong>Rating Given By:</strong> {{ givenBy }}</p>
+    <p><strong>Rating Given To:</strong> {{ givenTo }}</p>
+
+    <label>Rating (1–5)</label>
+    <select [(ngModel)]="score">
+      <option *ngFor="let s of [1, 2, 3, 4, 5]" [value]="s">
+        {{ s }}
+      </option>
+    </select>
+
+    <textarea rows="4" placeholder="Write your feedback..." [(ngModel)]="comment"> </textarea>
+
+    <button (click)="submitRating()">Submit Rating</button>
+  </div>
+</div>

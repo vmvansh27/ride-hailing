@@ -1,28 +1,17 @@
-<h2>Available Rides</h2>
+<div style="padding: 20px; background: #f0f0f0">
+  <h2>Available Ride Requests</h2>
 
-<!-- Async pipe automatically updates the view -->
-<div *ngIf="rides$ | async as rides">
-    <div *ngIf="rides.length === 0">
-        No rides available
-    </div>
+  <p *ngIf="loading">Loading rides...</p>
+  <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
 
-    <mat-card *ngFor="let ride of rides" class="ride-card">
-        <mat-card-title>Ride #{{ ride.ride_id }}</mat-card-title>
-        <mat-card-content>
-            <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
-            <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
-            <p><strong>Status:</strong> {{ ride.status }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button color="primary" *ngIf="ride.status === 'requested'"
-                (click)="acceptRide(ride.ride_id)">
-                Accept Ride
-            </button>
-            <button mat-button [routerLink]="['/ride', ride.ride_id]">
-                View Details
-            </button>
-        </mat-card-actions>
-    </mat-card>
+  <p>Total rides loaded: {{ rides.length }}</p>
+
+  <div *ngFor="let ride of rides" style="border: 1px solid black; margin: 10px; padding: 10px">
+    <p>Ride ID: {{ ride.ride_id }}</p>
+    <p>Pickup: {{ ride.pickup_location }}</p>
+    <p>Drop: {{ ride.drop_location }}</p>
+    <p>Status: {{ ride.status }}</p>
+
+    <button (click)="acceptRide(ride.ride_id)">Accept Ride</button>
+  </div>
 </div>
-
-<p *ngIf="!(rides$ | async)">Loading rides...</p>

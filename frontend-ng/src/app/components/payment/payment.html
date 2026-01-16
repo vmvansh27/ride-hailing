@@ -1,0 +1,24 @@
+<div class="payment-container">
+  <h2>Payment</h2>
+
+  <p *ngIf="loading">Loading payment details...</p>
+
+  <p class="error" *ngIf="!loading && errorMessage">
+    {{ errorMessage }}
+  </p>
+
+  <div *ngIf="!loading && !errorMessage" class="payment-card">
+    <p><strong>Ride ID:</strong> {{ rideId }}</p>
+    <p><strong>Amount:</strong> ₹{{ amount }}</p>
+
+    <label>Payment Method</label>
+    <select [(ngModel)]="method">
+      <option value="cash">Cash</option>
+      <option value="upi">UPI</option>
+      <option value="wallet">Wallet</option>
+      <option value="credit_card">Credit Card</option>
+    </select>
+
+    <button (click)="makePayment()">Pay Now</button>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="my-rides-container">
+  <h2>My Rides</h2>
+
+  <p *ngIf="loading">Loading rides...</p>
+
+  <p *ngIf="!loading && rides.length === 0">No rides found.</p>
+
+  <div *ngIf="!loading && rides.length > 0" class="ride-grid">
+    <div class="ride-card" *ngFor="let ride of rides">
+      <p><strong>Ride ID:</strong> {{ ride.ride_id }}</p>
+      <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
+      <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
+      <p><strong>Status:</strong> {{ ride.status }}</p>
+      <p *ngIf="ride.fare"><strong>Fare:</strong> ₹{{ ride.fare }}</p>
+
+      <button *ngIf="ride.status === 'completed'" (click)="goToPayment(ride.ride_id)">
+        Pay Now
+      </button>
+    </div>
+  </div>
+</div>

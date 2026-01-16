@@ -20,7 +20,10 @@ import { Auth } from './components/auth/auth';
 import { ProfileComponent } from './components/profile/profile';
 import { RideComponent } from './components/ride/ride';
 import { RideListComponent } from './components/ride-list/ride-list';
-
+import { CurrentRideComponent } from './components/current-ride/current-ride';
+import { MyRidesComponent } from './components/my-rides/my-rides';
+import { PaymentComponent } from './components/payment/payment';
+import { RatingComponent } from './components/rating/rating';
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'auth', component: Auth }, // login + register
@@ -31,4 +34,12 @@ export const routes: Routes = [
 
   // Driver
   { path: 'ride/list', component: RideListComponent },
+
+  { path: 'ride/current', component: CurrentRideComponent },
+
+  { path: 'my-rides', component: MyRidesComponent },
+
+  { path: 'payment/:rideId', component: PaymentComponent },
+
+  { path: 'rate/:rideId', component: RatingComponent },
 ];

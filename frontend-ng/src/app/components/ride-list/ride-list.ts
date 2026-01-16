@@ -1,105 +1,65 @@
-// import { Component, OnInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { HttpClient } from '@angular/common/http';
-// import { environment } from '../../../environments/environment';
-// import { MatCardModule } from '@angular/material/card';
-// import { MatButtonModule } from '@angular/material/button';
-// import { RouterModule } from '@angular/router';
-
-// @Component({
-//   selector: 'app-ride-list',
-//   standalone: true,
-//   imports: [
-//     CommonModule,
-//     MatCardModule,
-//     MatButtonModule,
-//     RouterModule
-//   ],
-//   templateUrl: './ride-list.html',
-//   styleUrls: ['./ride-list.css'] // optional, for styling cards
-// })
-// export class RideListComponent implements OnInit {
-
-//   rides: any[] = [];
-//   driver_id = 3;
-
-//   constructor(private http: HttpClient) { }
-
-//   ngOnInit() {
-//     this.loadRides();
-//   }
-
-//   loadRides() {
-//     this.http.get(`${environment.apiUrl}/rides`).subscribe((res: any) => {
-//       this.rides = res.filter((ride: any) => ride.status === 'requested');
-//       console.log('Requested rides:', this.rides);
-//     }, err => {
-//       console.error('Error fetching rides:', err);
-//     });
-//   }
-
-//   acceptRide(ride_id: number) {
-//     this.http.patch(`${environment.apiUrl}/rides/${ride_id}/accept`, { driver_id: this.driver_id })
-//       .subscribe((res: any) => {
-//         console.log('Ride accepted:', res);
-//         alert(`Ride ${ride_id} accepted!`);
-//         this.loadRides(); // refresh list
-//       }, err => {
-//         console.error('Error accepting ride', err);
-//         alert('Failed to accept ride');
-//       });
-//   }
-// }
-
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ride-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    RouterModule
-  ],
-  templateUrl: './ride-list.html'
+  imports: [CommonModule],
+  templateUrl: './ride-list.html',
+  styleUrl: './ride-list.css',
 })
-export class RideListComponent {
-  driver_id = 3;
+export class RideListComponent implements OnInit {
+  rides: any[] = [];
+  loading = true;
+  errorMessage = '';
+  driver_id!: number;
 
-  // Observable of rides
-  rides$!: Observable<any[]>;
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
-  constructor(private http: HttpClient) {
+  ngOnInit() {
+    const user = this.authService.getUser();
+    if (!user || user.role !== 'driver') {
+      this.errorMessage = 'Only drivers can access this page';
+      this.loading = false;
+      return;
+    }
+
+    this.driver_id = user.user_id;
     this.loadRides();
   }
 
   loadRides() {
-    this.rides$ = this.http.get(`${environment.apiUrl}/rides`).pipe(
-      map((res: any) => res.filter((ride: any) => ride.status === 'requested'))
-    );
+    this.loading = true;
+    this.http.get(`${environment.apiUrl}/rides`).subscribe({
+      next: (res: any) => {
+        this.rides = Array.isArray(res) ? res.filter((r: any) => r.status === 'requested') : [];
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load rides';
+        this.loading = false;
+      },
+    });
   }
 
   acceptRide(ride_id: number) {
-    this.http.patch(`${environment.apiUrl}/rides/${ride_id}/accept`, { driver_id: this.driver_id })
+    this.http
+      .patch(`${environment.apiUrl}/rides/${ride_id}/accept`, {
+        driver_id: this.driver_id,
+      })
       .subscribe({
-        next: (res: any) => {
-          alert(`Ride ${ride_id} accepted!`);
-          this.loadRides(); // Refresh rides after accepting
+        next: () => {
+          alert(`Ride ${ride_id} accepted`);
+          // Force route reload so current ride is fetched freshly
+          this.router.navigateByUrl('/ride/current');
         },
-        error: err => {
-          console.error('Error accepting ride', err);
+        error: () => {
           alert('Failed to accept ride');
-        }
+        },
       });
   }
 }

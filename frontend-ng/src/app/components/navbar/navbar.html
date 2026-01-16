@@ -14,11 +14,13 @@
       <!-- Rider menu -->
       <ng-container *ngIf="user.role === 'rider'">
         <a routerLink="/ride/request">Request Ride</a>
+        <a routerLink="/my-rides">My Rides</a>
       </ng-container>
 
       <!-- Driver menu -->
       <ng-container *ngIf="user.role === 'driver'">
         <a routerLink="/ride/list">Available Rides</a>
+        <a routerLink="/ride/current">Current Ride</a>
       </ng-container>
 
       <a routerLink="/profile">Profile</a>

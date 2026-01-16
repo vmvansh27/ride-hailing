@@ -1,0 +1,41 @@
+.current-ride-container {
+  padding: 30px;
+  background: #f3f4f6;
+  min-height: 80vh;
+  text-align: center;
+}
+
+.ride-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 320px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+}

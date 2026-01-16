@@ -1,18 +1,30 @@
-<div *ngIf="loading">Loading ride details...</div>
-<div *ngIf="errorMessage">{{ errorMessage }}</div>
+<div class="ride-container">
+  <div class="ride-card">
+    <h2>Request a Ride</h2>
 
-<mat-card *ngIf="ride && !loading" class="ride-card">
-    <mat-card-title>Ride #{{ ride.ride_id }}</mat-card-title>
-    <mat-card-content>
-        <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
-        <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
-        <p><strong>Status:</strong> {{ ride.status }}</p>
-        <p *ngIf="ride.start_time"><strong>Start Time:</strong> {{ ride.start_time }}</p>
-        <p *ngIf="ride.end_time"><strong>End Time:</strong> {{ ride.end_time }}</p>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button color="primary" *ngIf="ride.status === 'requested'" (click)="acceptRide()">
-            Accept Ride
-        </button>
-    </mat-card-actions>
-</mat-card>
+    <form (ngSubmit)="requestRide()">
+      <input
+        type="text"
+        placeholder="Pickup Location"
+        [(ngModel)]="rideData.pickup_location"
+        name="pickup"
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Drop Location"
+        [(ngModel)]="rideData.drop_location"
+        name="drop"
+        required
+      />
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Requesting...' : 'Request Ride' }}
+      </button>
+    </form>
+
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>
