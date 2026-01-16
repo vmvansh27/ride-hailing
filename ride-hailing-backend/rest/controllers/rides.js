@@ -40,6 +40,18 @@ export const acceptRide = async (req, res) => {
     }
 };
 
+
+export const listAllRides = async (req, res) => {
+    try {
+        const rides = await Ride.findAll();   // Sequelize model
+        res.json(rides);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Failed to fetch all rides" });
+    }
+};
+
+
 export const startRide = async (req, res) => {
     try {
         await Ride.update(

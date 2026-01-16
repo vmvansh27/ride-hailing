@@ -1,15 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const rides = require("../rest/controllers/rides");
-// router.post("/request", rides.requestRide);
-// router.get("/", rides.listRides);
-// router.patch("/:id/accept", rides.acceptRide);
-// router.patch("/:id/start", rides.startRide);
-// router.patch("/:id/complete", rides.completeRide);
-// router.patch("/:id/cancel", rides.cancelRide);
-// module.exports = router;
-
-
 import express from "express";
 import {
     requestRide,
@@ -17,7 +5,8 @@ import {
     acceptRide,
     startRide,
     completeRide,
-    cancelRide
+    cancelRide,
+    listAllRides   // 👈 add this
 } from "../controllers/rides.js";
 
 const router = express.Router();
@@ -25,8 +14,11 @@ const router = express.Router();
 // Rider requests a ride
 router.post("/request", requestRide);
 
-// Driver sees requested rides
+// Driver sees ONLY requested rides
 router.get("/", listRides);
+
+// Driver gets ALL rides (for current ride lookup, admin, etc.)
+router.get("/all", listAllRides);   // 👈 NEW ROUTE
 
 // Driver accepts ride
 router.patch("/:id/accept", acceptRide);
