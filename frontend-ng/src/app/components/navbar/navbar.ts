@@ -32,10 +32,22 @@ export class NavbarComponent implements OnInit {
   }
 
   loadUser() {
-    const storedUser = localStorage.getItem('user');
-    this.user = storedUser ? JSON.parse(storedUser) : null;
-    this.isLoggedIn = !!this.user;
+    const stored = localStorage.getItem('user');
+
+    if (!stored || stored === 'undefined' || stored === 'null') {
+      this.user = null;
+      return;
+    }
+
+    try {
+      this.user = JSON.parse(stored);
+    } catch (e) {
+      console.error('Invalid user in localStorage', stored);
+      localStorage.removeItem('user');
+      this.user = null;
+    }
   }
+
 
   logout() {
     localStorage.removeItem('user');
