@@ -1,90 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style type="text/css">
-        #hidden { display: none}
-        </style>
-    </head>
-    
-    <title>
-        Ride.ly
-    </title>
 
-    <body>
-        <div id="main-page">
-            <h1>Welcome to Ridely!</h1>
-            <form onsubmit="displayLogin()">
-            <p>
-            <input type="submit" value="Login to begin" />
-            </p>
-            </form>
-        </div>
-        <script src="scripts/index.js"></script>
-    </body>
-</html>
-<div id="hidden">
-    <div id="signin-register">
-        <h1>Sign-in</h1>
-        <forms id="info-form">
-            <p>
-            <input type="text" id="username-input-signin" placeholder="Enter your email or phone" required autofocus/>
-            </p>
-            <p>
-            <input type="password" id="password-input-signin" placeholder="Password" />
-            </p>
-            <p>
-            <button type="submit" id="submit-input-signin">Sign-in</button>
-            <button type="submit" id="submit-input-register">Register</button>
-            </p>
-        </forms>
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div id="role-assignment">
-        <h1>Register</h1>
-        <form id="role-form" onsubmit="handleRoleFormSubmit()">
-            <p>
-            Name: 
-            <input type="text" id="username-input" name="full_name" placeholder="Enter your name" required autofocus>
-            <br/>
-            </p>
-            <p>
-            Email:
-            <input type="text" id="email-register" name="email" placeholder="Enter your email" required/>
-            </p>
-            <p>
-            Phone:
-            <input type="text" id="phone-signin" name="phone" placeholder="Enter your phone" required/>
-            </p>
-            <p>
-            Enter a new passord:
-            <input type="password" id="password-input-signin" name="password" placeholder="Password" required/>
-            </p>
-            <p>I am a: </p>
-            <input type="radio" id="rider" value="rider" name="role">
-            <label for="Rider">Rider</label> <br/>
-            <input type="radio" id="driver" value="driver" name="role">
-            <label for="Driver">Driver</label> 
-            <br/>
-            <h4>Only for drivers</h4>
-            <p>Vehicle License Number: </p>
-            <input type="text" id="license-number-input" name="license_number" placeholder="Enter license plate number">
-            <br />
-            <input type="submit" id="roles-submit" value="Submit"/>
-            </p>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        #hidden {
+            display: none;
+        }
+
+        /* THIS is what makes the boxes big */
+        .wide-card {
+            width: 100%;
+            max-width: 1100px;
+            /* ⬅️ real width control */
+            margin: auto;
+        }
+
+        .card {
+            border-radius: 16px;
+        }
+
+        .btn-primary {
+            background-color: #4f46e5;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+    </style>
+
+    <title>Ride.ly</title>
+</head>
+
+<body>
+
+    <!-- Main Page (Centered ONLY this) -->
+    <div id="main-page" class="d-flex flex-column align-items-center justify-content-center text-center"
+        style="min-height: 100vh;">
+        <h1 class="fw-bold mb-3">Welcome to Ride.ly 🚗</h1>
+        <p class="mb-4 fs-5">Your smart ride-hailing platform</p>
+        <form onsubmit="displayLogin()">
+            <input type="submit" class="btn btn-light btn-lg px-5" value="Login to begin" />
         </form>
     </div>
 
-    <div id="user-dashboard">
-        <h1>User dashboard</h1>
+    <!-- Hidden Content -->
+    <div id="hidden" class="container-fluid py-5">
+
+        <!-- Sign In -->
+        <div id="signin-register" class="row justify-content-center mb-5">
+            <div class="col-12">
+                <div class="card wide-card p-5 shadow-lg">
+                    <h3 class="text-center mb-4 text-dark">Sign In</h3>
+
+                    <forms id="info-form">
+                        <div class="mb-4">
+                            <input type="text" id="username-input-signin" class="form-control form-control-lg"
+                                placeholder="Enter your email or phone" required autofocus />
+                        </div>
+
+                        <div class="mb-4">
+                            <input type="password" id="password-input-signin" class="form-control form-control-lg"
+                                placeholder="Password" />
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary btn-lg px-4" id="submit-input-signin">
+                                Sign In
+                            </button>
+                            <button type="submit" class="btn btn-outline-secondary btn-lg px-4"
+                                id="submit-input-register">
+                                Register
+                            </button>
+                        </div>
+                    </forms>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register -->
+        <div id="role-assignment" class="row justify-content-center mb-5">
+            <div class="col-12">
+                <div class="card wide-card p-5 shadow-lg">
+                    <h3 class="text-center mb-4 text-dark">Register</h3>
+
+                    <form id="role-form" onsubmit="handleRoleFormSubmit()">
+
+                        <div class="mb-3">
+                            <label class="form-label text-dark">Name</label>
+                            <input type="text" id="username-input" name="full_name" class="form-control form-control-lg"
+                                placeholder="Enter your name" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-dark">Email</label>
+                            <input type="text" id="email-register" name="email" class="form-control form-control-lg"
+                                placeholder="Enter your email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-dark">Phone</label>
+                            <input type="text" id="phone-signin" name="phone" class="form-control form-control-lg"
+                                placeholder="Enter your phone" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-dark">Password</label>
+                            <input type="password" id="password-input-signin" name="password"
+                                class="form-control form-control-lg" placeholder="Password" required />
+                        </div>
+
+                        <div class="mb-4 text-dark">
+                            <label class="form-label">I am a:</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="rider" value="rider" name="role">
+                                <label class="form-check-label" for="rider">Rider</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="driver" value="driver" name="role">
+                                <label class="form-check-label" for="driver">Driver</label>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="mb-4">
+                            <label class="form-label text-dark">
+                                Vehicle License Number (Drivers only)
+                            </label>
+                            <input type="text" id="license-number-input" name="license_number"
+                                class="form-control form-control-lg" placeholder="Enter license plate number" />
+                        </div>
+
+                        <div class="text-center">
+                            <input type="submit" id="roles-submit" class="btn btn-primary btn-lg px-5" value="Submit" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboards -->
+        <div id="user-dashboard" class="text-center">
+            <h2>User Dashboard</h2>
+        </div>
+
+        <div id="driver-dashboard" class="text-center">
+            <h2>Driver Dashboard</h2>
+            <p>Vehicles • Ratings</p>
+        </div>
 
     </div>
 
-    <div id="driver-dashboard">
-        <h1>Driver dashboard</h1>
-        <article>Vehicles</article>
-        <article>Ratings</article>
-    </div>
+    <script src="scripts/index.js"></script>
+</body>
 
-</div>
+</html>

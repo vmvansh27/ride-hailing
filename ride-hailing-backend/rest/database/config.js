@@ -1,5 +1,5 @@
 
-import {PASSWD} from './credentials.js';
+import { PASSWD } from './credentials.js';
 const config = {
     HOST: "localhost",
     USER: "root",

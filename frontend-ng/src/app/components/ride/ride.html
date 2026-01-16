@@ -1,0 +1,18 @@
+<div *ngIf="loading">Loading ride details...</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
+
+<mat-card *ngIf="ride && !loading" class="ride-card">
+    <mat-card-title>Ride #{{ ride.ride_id }}</mat-card-title>
+    <mat-card-content>
+        <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
+        <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
+        <p><strong>Status:</strong> {{ ride.status }}</p>
+        <p *ngIf="ride.start_time"><strong>Start Time:</strong> {{ ride.start_time }}</p>
+        <p *ngIf="ride.end_time"><strong>End Time:</strong> {{ ride.end_time }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" *ngIf="ride.status === 'requested'" (click)="acceptRide()">
+            Accept Ride
+        </button>
+    </mat-card-actions>
+</mat-card>
