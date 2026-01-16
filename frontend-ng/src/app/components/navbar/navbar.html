@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+    <span style="cursor:pointer" routerLink="/">Ride Hailing App</span>
+
+    <span style="flex: 1 1 auto;"></span>
+
+    <!-- NOT LOGGED IN -->
+    <button mat-button routerLink="/login" *ngIf="!isLoggedIn">
+        Login
+    </button>
+
+    <!-- LOGGED IN -->
+    <ng-container *ngIf="isLoggedIn">
+        <button mat-button routerLink="/profile">Profile</button>
+
+        <button mat-button routerLink="/ride-list" *ngIf="user?.role === 'driver'">
+            Rides
+        </button>
+
+        <button mat-button (click)="logout()">Logout</button>
+    </ng-container>
+</mat-toolbar>

@@ -1,0 +1,23 @@
+<div *ngIf="user; else noUser">
+    <h2>Welcome, {{ user.full_name }}</h2>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Role:</strong> {{ user.role }}</p>
+
+    <!-- Rider UI -->
+    <div *ngIf="user.role === 'rider'">
+        <h3>Rider Actions</h3>
+        <a routerLink="/request-ride">Book a Ride</a>
+    </div>
+
+    <!-- Driver UI -->
+    <div *ngIf="user.role === 'driver'">
+        <h3>Driver Actions</h3>
+        <a routerLink="/ride-list">View Available Rides</a>
+    </div>
+</div>
+
+<ng-template #noUser>
+    <p>Please login to view your profile.</p>
+</ng-template>
