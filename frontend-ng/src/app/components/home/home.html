@@ -1,26 +1,13 @@
-<mat-card *ngIf="user">
-    <mat-card-title>Welcome, {{ user.full_name }}</mat-card-title>
+<div class="home-container">
+  <h1>Ride Hailing App</h1>
 
-    <mat-card-content>
-        <p>Role: {{ user.role }}</p>
-    </mat-card-content>
+  <div *ngIf="user; else guest">
+    <h2>Welcome, {{ user.full_name }}</h2>
+    <p>Role: {{ user.role }}</p>
+  </div>
 
-    <mat-card-actions *ngIf="user.role === 'rider'">
-        <button mat-raised-button color="primary" routerLink="/request-ride">
-            Book a Ride
-        </button>
-    </mat-card-actions>
-
-    <mat-card-actions *ngIf="user.role === 'driver'">
-        <button mat-raised-button color="accent" routerLink="/ride-list">
-            View Available Rides
-        </button>
-    </mat-card-actions>
-</mat-card>
-
-<mat-card *ngIf="!user">
-    <mat-card-title>Welcome to Ride Hailing App</mat-card-title>
-    <mat-card-actions>
-        <button mat-raised-button color="primary" routerLink="/login">Login</button>
-    </mat-card-actions>
-</mat-card>
+  <ng-template #guest>
+    <h2>Welcome to Ride Hailing App</h2>
+    <p>Please login or register.</p>
+  </ng-template>
+</div>

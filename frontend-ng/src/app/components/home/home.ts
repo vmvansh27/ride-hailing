@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatCardModule, MatButtonModule],
-  templateUrl: './home.html'
+  imports: [CommonModule],
+  templateUrl: './home.html',
+  styleUrl: './home.css',
 })
-export class HomeComponent implements OnInit {
-  user: any;
+export class Home implements OnInit {
+  user: any = null;
 
   ngOnInit() {
-    const stored = localStorage.getItem('user');
-    if (stored) {
-      this.user = JSON.parse(stored);
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.user = JSON.parse(storedUser);
     }
   }
 }

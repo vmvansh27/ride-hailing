@@ -1,58 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterLink, NavigationEnd } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule
-  ],
-  templateUrl: './navbar.html'
+  imports: [CommonModule, RouterLink],
+  templateUrl: './navbar.html',
+  styleUrl: './navbar.css',
 })
-export class NavbarComponent implements OnInit {
-
-  user: any = null;
-  isLoggedIn = false;
-
-  constructor(private router: Router) { }
-
-  ngOnInit(): void {
-    this.loadUser();
-
-    // 🔁 Update navbar on route change (login/logout)
-    this.router.events.subscribe(() => {
-      this.loadUser();
-    });
+export class NavbarComponent {
+  constructor(private authService: AuthService, private router: Router) {
+    // Refresh navbar whenever route changes
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {});
   }
 
-  loadUser() {
-    const stored = localStorage.getItem('user');
-
-    if (!stored || stored === 'undefined' || stored === 'null') {
-      this.user = null;
-      return;
-    }
-
-    try {
-      this.user = JSON.parse(stored);
-    } catch (e) {
-      console.error('Invalid user in localStorage', stored);
-      localStorage.removeItem('user');
-      this.user = null;
-    }
+  get user() {
+    return this.authService.getUser();
   }
-
 
   logout() {
-    localStorage.removeItem('user');
-    this.user = null;
-    this.isLoggedIn = false;
-    this.router.navigate(['/login']);
+    this.authService.logout();
+    this.router.navigate(['/auth']);
   }
 }

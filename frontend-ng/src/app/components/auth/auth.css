@@ -1,0 +1,71 @@
+.auth-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.auth-card {
+  background: #fff;
+  width: 360px;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.tabs button.active {
+  background: #2c5364;
+  color: #fff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.form input,
+.form select {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.primary-btn {
+  margin-top: 10px;
+  padding: 10px;
+  background: #2c5364;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.primary-btn:hover {
+  background: #203a43;
+}
