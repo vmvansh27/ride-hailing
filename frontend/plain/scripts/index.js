@@ -57,8 +57,8 @@ const postSignInData = async (e) => {
             const role = json.user.role; 
             const contentDiv = document.querySelector("#main-page");
 
-            if (role === "rider") displayUserDashboard(contentDiv);
-            else if (role === "driver") displayDriverDashboard(contentDiv);
+            if (role === "rider") displayUserDashboard(contentDiv, json.user);
+            else if (role === "driver") displayDriverDashboard(contentDiv, json.user);
             else alert("Unknown role from server");
         } else {
             alert("Login failed: " + (json.message || "Check credentials"));
@@ -116,15 +116,26 @@ const handleLogin = async (conDiv) => {
 
 
 
-const displayDriverDashboard = async (conDiv) => {
+const displayDriverDashboard = async (conDiv, jsonData) => {
     // WIP: Displays driver dashboard.
     var driverDashboard = document.querySelector("#driver-dashboard");
+    const driverNameInDashboard = document.querySelector("#name-driver-dashboard");
+    driverNameInDashboard.innerHTML = jsonData.full_name;
     conDiv.innerHTML = driverDashboard.innerHTML;
+    addVehicleButton = document.querySelector("#add-vehicle-driver-button");
+    addVehicleButton.addEventListener('click', (e, jsonData) => {
+        addVehiclePage = document.querySelector("#driver-add-vehicle");
+        conDiv = document.querySelector("#main-page");
+        conDiv.innerHTML = addVehiclePage.innerHTML;
+    })
+
 }
 
-const displayUserDashboard = async (conDiv) => {
+const displayUserDashboard = async (conDiv, jsonData) => {
     // WIP: Displays user dashboard
     var userDashboard = document.querySelector("#user-dashboard");
+    const userNameInDashboard= document.querySelector("#name-user-dashboard");
+    userNameInDashboard.innerHTML = jsonData.full_name;
     conDiv.innerHTML = userDashboard.innerHTML;
 }
 
