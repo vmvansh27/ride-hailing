@@ -14,3 +14,13 @@ export const pay = async (req, res) => {
         res.json({ success: false, message: err.message });
     }
 };
+
+export const listPayments = async (req, res) => {
+    try {
+        const payments = await Payment.findAll();
+        res.json(payments);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+

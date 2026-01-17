@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +18,11 @@ export class CurrentRideComponent implements OnInit {
   errorMessage = '';
   fare: number | null = null;
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     this.loadCurrentRide();
@@ -26,10 +30,12 @@ export class CurrentRideComponent implements OnInit {
 
   loadCurrentRide() {
     const user = this.authService.getUser();
+    console.log('Logged in user:', user);
 
     if (!user || user.role !== 'driver') {
       this.errorMessage = 'Only drivers can access this page';
       this.loading = false;
+      this.cdr.detectChanges();
       return;
     }
 
@@ -42,34 +48,38 @@ export class CurrentRideComponent implements OnInit {
 
         this.ride = Array.isArray(res)
           ? res.find(
-              (r: any) => Number(r.driver_id) === Number(user.user_id) && r.status === 'ongoing'
+              (r: any) => Number(r.driver_id) === Number(user.user_id) && r.status === 'ongoing',
             )
           : null;
 
         console.log('Matched ongoing ride:', this.ride);
 
-        this.loading = false; // 🔥 THIS WAS MISSING
+        this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Failed to load current ride';
-        this.loading = false; // 🔥 ALSO HERE
+        this.loading = false;
+        this.cdr.detectChanges();
       },
     });
   }
 
   startRide() {
+    if (!this.ride) return;
+
     this.http.patch(`${environment.apiUrl}/rides/${this.ride.ride_id}/start`, {}).subscribe({
       next: () => {
         alert('Ride started');
-        this.loadCurrentRide(); // 🔥 re-fetch ride from DB
+        this.loadCurrentRide();
       },
       error: () => alert('Failed to start ride'),
     });
   }
 
   completeRide() {
-    if (!this.fare) {
+    if (!this.fare || !this.ride) {
       alert('Please enter fare');
       return;
     }
@@ -81,12 +91,9 @@ export class CurrentRideComponent implements OnInit {
       .subscribe({
         next: () => {
           alert('Ride completed successfully!');
-          this.ride.status = 'completed';
-
-          // Optional: after 2 seconds, clear screen or redirect
-          setTimeout(() => {
-            this.ride = null; // no current ride anymore
-          }, 2000);
+          this.ride = null;
+          this.loading = false;
+          this.cdr.detectChanges();
         },
         error: () => alert('Failed to complete ride'),
       });

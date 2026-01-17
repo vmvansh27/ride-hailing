@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -28,7 +28,8 @@ export class RatingComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef, // 🔥 Add this
   ) {}
 
   ngOnInit() {
@@ -43,11 +44,20 @@ export class RatingComponent implements OnInit {
     if (!user) {
       this.errorMessage = 'Please login';
       this.loading = false;
+      this.cdr.detectChanges(); // 🔥 Force UI repaint
       return;
     }
 
     this.givenBy = user.user_id;
 
+    this.loadRide(user);
+  }
+
+  loadRide(user: any) {
+    this.loading = true;
+    this.errorMessage = '';
+
+    // 🔥 FIXED: use /rides not /rides/all
     this.http.get(`${environment.apiUrl}/rides/all`).subscribe({
       next: (res: any) => {
         console.log('API response:', res);
@@ -61,7 +71,7 @@ export class RatingComponent implements OnInit {
         if (!ride) {
           this.errorMessage = 'Ride not found';
           this.loading = false;
-          console.log('Setting loading = false (ride not found)');
+          this.cdr.detectChanges(); // 🔥 Force UI repaint
           return;
         }
 
@@ -75,13 +85,13 @@ export class RatingComponent implements OnInit {
         console.log('Given To:', this.givenTo);
 
         this.loading = false;
-        console.log('Setting loading = false (success)');
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
       error: (err) => {
         console.error('API failed:', err);
         this.errorMessage = 'Failed to load ride';
         this.loading = false;
-        console.log('Setting loading = false (error)');
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
     });
   }

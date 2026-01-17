@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -18,13 +18,19 @@ export class RideListComponent implements OnInit {
   errorMessage = '';
   driver_id!: number;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef, // 🔥 Add this
+  ) {}
 
   ngOnInit() {
     const user = this.authService.getUser();
     if (!user || user.role !== 'driver') {
       this.errorMessage = 'Only drivers can access this page';
       this.loading = false;
+      this.cdr.detectChanges(); // 🔥 Force UI update
       return;
     }
 
@@ -34,14 +40,24 @@ export class RideListComponent implements OnInit {
 
   loadRides() {
     this.loading = true;
+    this.errorMessage = '';
+
     this.http.get(`${environment.apiUrl}/rides`).subscribe({
       next: (res: any) => {
+        console.log('All rides from API:', res);
+
         this.rides = Array.isArray(res) ? res.filter((r: any) => r.status === 'requested') : [];
+
+        console.log('Filtered requested rides:', this.rides);
+
         this.loading = false;
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
-      error: () => {
+      error: (err) => {
+        console.error(err);
         this.errorMessage = 'Failed to load rides';
         this.loading = false;
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
     });
   }
@@ -54,8 +70,8 @@ export class RideListComponent implements OnInit {
       .subscribe({
         next: () => {
           alert(`Ride ${ride_id} accepted`);
-          // Force route reload so current ride is fetched freshly
-          this.router.navigateByUrl('/ride/current');
+          // Navigate to Current Ride screen
+          this.router.navigate(['/ride/current']);
         },
         error: () => {
           alert('Failed to accept ride');

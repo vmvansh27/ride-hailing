@@ -15,3 +15,13 @@ export const rate = async (req, res) => {
         res.json({ success: false, message: err.message });
     }
 };
+
+export const listRatings = async (req, res) => {
+    try {
+        const ratings = await Rating.findAll();
+        res.json(ratings);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+

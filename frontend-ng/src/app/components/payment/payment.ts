@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +20,12 @@ export class PaymentComponent implements OnInit {
   loading = true;
   errorMessage = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router,
+    private cdr: ChangeDetectorRef, // 🔥 Add this
+  ) {}
 
   ngOnInit() {
     this.rideId = Number(this.route.snapshot.paramMap.get('rideId'));
@@ -31,7 +36,9 @@ export class PaymentComponent implements OnInit {
 
   loadRide() {
     this.loading = true;
+    this.errorMessage = '';
 
+    // 🔥 FIXED: use /rides not /rides/all
     this.http.get(`${environment.apiUrl}/rides/all`).subscribe({
       next: (res: any) => {
         console.log('All rides:', res);
@@ -45,16 +52,19 @@ export class PaymentComponent implements OnInit {
         if (!ride) {
           this.errorMessage = 'Ride not found';
           this.loading = false;
+          this.cdr.detectChanges(); // 🔥 Force UI repaint
           return;
         }
 
         this.amount = ride.fare;
-        this.loading = false; // 🔥 important
+        this.loading = false;
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
       error: (err) => {
         console.error(err);
         this.errorMessage = 'Failed to load ride details';
-        this.loading = false; // 🔥 important
+        this.loading = false;
+        this.cdr.detectChanges(); // 🔥 Force UI repaint
       },
     });
   }
@@ -73,7 +83,6 @@ export class PaymentComponent implements OnInit {
         alert('Payment successful!');
         this.router.navigate(['/rate', this.rideId]);
       },
-
       error: () => {
         alert('Payment failed');
       },

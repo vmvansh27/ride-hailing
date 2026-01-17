@@ -6,11 +6,12 @@
 
 
 import express from "express";
-import { rate } from "../controllers/ratings.js";
+import { listRatings, rate } from "../controllers/ratings.js";
 
 const router = express.Router();
 
 // Submit rating
 router.post("/", rate);
+router.get("/", listRatings);
 
 export default router;

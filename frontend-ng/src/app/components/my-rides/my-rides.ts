@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -14,44 +14,69 @@ import { Router } from '@angular/router';
 })
 export class MyRidesComponent implements OnInit {
   rides: any[] = [];
+  payments: any[] = [];
+  ratings: any[] = [];
+
   loading = true;
   errorMessage = '';
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit() {
     const user = this.authService.getUser();
-    console.log('Logged in user:', user);
 
     if (!user || user.role !== 'rider') {
       this.errorMessage = 'Only riders can access this page';
       this.loading = false;
+      this.cdr.detectChanges();
       return;
     }
 
+    this.loadData(user.user_id);
+  }
+
+  loadData(userId: number) {
     this.loading = true;
 
-    this.http.get(`${environment.apiUrl}/rides/all`).subscribe({
-      next: (res: any) => {
-        console.log('All rides from API:', res);
+    Promise.all([
+      this.http.get(`${environment.apiUrl}/rides/all`).toPromise(),
+      this.http.get(`${environment.apiUrl}/payments`).toPromise(),
+      this.http.get(`${environment.apiUrl}/ratings`).toPromise(),
+    ])
+      .then(([rides, payments, ratings]: any) => {
+        this.payments = payments || [];
+        this.ratings = ratings || [];
 
-        this.rides = Array.isArray(res)
-          ? res.filter((r) => Number(r.rider_id) === Number(user.user_id))
-          : [];
+        this.rides = (rides || []).filter((r: any) => Number(r.rider_id) === Number(userId));
 
-        console.log('Filtered rider rides:', this.rides);
-
-        this.loading = false; // VERY IMPORTANT
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Failed to load rides';
         this.loading = false;
-      },
-    });
+        this.cdr.detectChanges();
+      })
+      .catch(() => {
+        this.errorMessage = 'Failed to load data';
+        this.loading = false;
+        this.cdr.detectChanges();
+      });
+  }
+
+  hasPayment(rideId: number): boolean {
+    return this.payments.some((p) => Number(p.ride_id) === Number(rideId));
+  }
+
+  hasRating(rideId: number): boolean {
+    return this.ratings.some((r) => Number(r.ride_id) === Number(rideId));
   }
 
   goToPayment(rideId: number) {
     this.router.navigate(['/payment', rideId]);
+  }
+
+  goToRating(rideId: number) {
+    this.router.navigate(['/rate', rideId]);
   }
 }

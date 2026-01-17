@@ -1,21 +1,28 @@
-<div class="my-rides-container">
-  <h2>My Rides</h2>
+<h2>My Rides</h2>
 
-  <p *ngIf="loading">Loading rides...</p>
+<p *ngIf="loading">Loading rides...</p>
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
 
-  <p *ngIf="!loading && rides.length === 0">No rides found.</p>
+<div *ngFor="let ride of rides" class="ride-card">
+  <p><b>Ride ID:</b> {{ ride.ride_id }}</p>
+  <p><b>Pickup:</b> {{ ride.pickup_location }}</p>
+  <p><b>Drop:</b> {{ ride.drop_location }}</p>
+  <p><b>Status:</b> {{ ride.status }}</p>
+  <p><b>Fare:</b> ₹{{ ride.fare }}</p>
 
-  <div *ngIf="!loading && rides.length > 0" class="ride-grid">
-    <div class="ride-card" *ngFor="let ride of rides">
-      <p><strong>Ride ID:</strong> {{ ride.ride_id }}</p>
-      <p><strong>Pickup:</strong> {{ ride.pickup_location }}</p>
-      <p><strong>Drop:</strong> {{ ride.drop_location }}</p>
-      <p><strong>Status:</strong> {{ ride.status }}</p>
-      <p *ngIf="ride.fare"><strong>Fare:</strong> ₹{{ ride.fare }}</p>
+  <!-- PAYMENT -->
+  <button *ngIf="!hasPayment(ride.ride_id)" (click)="goToPayment(ride.ride_id)">Pay Now</button>
 
-      <button *ngIf="ride.status === 'completed'" (click)="goToPayment(ride.ride_id)">
-        Pay Now
-      </button>
-    </div>
-  </div>
+  <!-- RATING -->
+  <button
+    *ngIf="hasPayment(ride.ride_id) && !hasRating(ride.ride_id)"
+    (click)="goToRating(ride.ride_id)"
+  >
+    Rate Driver
+  </button>
+
+  <!-- DONE -->
+  <p *ngIf="hasPayment(ride.ride_id) && hasRating(ride.ride_id)" style="color: green">
+    ✔ Ride Completed & Reviewed
+  </p>
 </div>

@@ -7,11 +7,12 @@
 
 
 import express from "express";
-import { pay } from "../controllers/payments.js";
+import { listPayments, pay } from "../controllers/payments.js";
 
 const router = express.Router();
 
 // Process payment
 router.post("/", pay);
+router.get("/", listPayments)
 
 export default router;
