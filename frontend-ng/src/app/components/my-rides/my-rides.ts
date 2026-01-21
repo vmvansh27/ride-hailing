@@ -25,7 +25,7 @@ export class MyRidesComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   ngOnInit() {
     const user = this.authService.getUser();

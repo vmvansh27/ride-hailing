@@ -25,21 +25,11 @@
       <div class="buttons">
         <button mat-raised-button color="primary" routerLink="/my-rides">My Rides</button>
 
-        <button
-          mat-raised-button
-          color="accent"
-          *ngIf="user.role === 'rider'"
-          routerLink="/ride/request"
-        >
+        <button mat-raised-button color="accent" *ngIf="user.role === 'rider'" routerLink="/ride/request">
           Book Ride
         </button>
 
-        <button
-          mat-raised-button
-          color="warn"
-          *ngIf="user.role === 'driver'"
-          routerLink="/ride/list"
-        >
+        <button mat-raised-button color="warn" *ngIf="user.role === 'driver'" routerLink="/ride/list">
           View Requests
         </button>
       </div>
@@ -50,8 +40,8 @@
       <p class="subtitle">Fast • Safe • Reliable rides</p>
 
       <div class="buttons">
-        <button mat-raised-button color="primary" routerLink="/login">Login</button>
-        <button mat-stroked-button color="primary" routerLink="/register">Register</button>
+        <button mat-raised-button color="primary" routerLink="/auth">Login</button>
+        <button mat-stroked-button color="primary" routerLink="/auth">Register</button>
       </div>
     </ng-template>
   </mat-card>
