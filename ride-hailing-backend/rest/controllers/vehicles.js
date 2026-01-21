@@ -1,6 +1,7 @@
 import { Vehicle } from "../models/index.js";
 
 export const addVehicle = async (req, res) => {
+    console.log(req.body);
     try {
         await Vehicle.create({
             driver_id: req.body.driver_id,

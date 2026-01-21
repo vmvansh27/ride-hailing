@@ -163,7 +163,7 @@ The entire frontend and all the sections are contained within this html file. --
     -->
         <h1>Driver dashboard</h1>
         <h3>Add a Vehicle</h3>
-        <form>
+        <form id="add-vehicle-form" onsubmit="handleAddVehicleSubmit()">
             <label>Vehicle Plate No.:</label>
             <input type="text" placeholder="E.g. AB00XY1234" required pattern="[A-Z]{2}\d{2}[A-Z]{2}\d{4}" autofocus>
             <br/>
@@ -177,7 +177,7 @@ The entire frontend and all the sections are contained within this html file. --
             <input type="text">
             <br/>
             <label>Year: </label>
-            <input type="text">
+            <input type="number">
             <br/>
             <input type="submit" value="Submit">
         </form>

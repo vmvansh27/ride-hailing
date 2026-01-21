@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { User } from "../models/index.js";
 
 export const register = async (req, res) => {
+    console.log(req.body);
     try {
         const hashed = bcrypt.hashSync(req.body.password, 10);
 
@@ -21,6 +22,7 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+    console.log(req.body);
     try {
         const user = await User.findOne({ where: { email: req.body.email } });
 

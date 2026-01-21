@@ -1,3 +1,5 @@
+//import { response } from "express";
+
 const handleRoleFormSubmit = async () => {
     /*
     handleRoleFormSubmit() is called when the register button is clicked in
@@ -31,6 +33,7 @@ const displayLogin = async () => {
     contentDiv = await document.querySelector("#main-page");
     contentDiv.innerHTML = loginPage.innerHTML;
     handleLogin(contentDiv);
+    //document.querySelector("#change-para").innerText = "Para value changed With innserText!"
 
 }
 
@@ -114,8 +117,6 @@ const handleLogin = async (conDiv) => {
     }
 }
 
-
-
 const displayDriverDashboard = async (conDiv, jsonData) => {
     // WIP: Displays driver dashboard.
     var driverDashboard = document.querySelector("#driver-dashboard");
@@ -143,6 +144,39 @@ const displayRoles = async (conDiv) => {
     // Displays registration form
     var rolesPage = document.querySelector("#role-assignment");
     conDiv.innerHTML = rolesPage.innerHTML;
+}
+
+const handleAddVehicleSubmit = () => {
+    //e.preventDefault();
+    console.log("handleAddVehicle Top -------");
+    const conDiv = document.querySelector("#main-page");
+    console.log('conDiv is ');
+    console.log(conDiv);
+    const addVehicleForm = document.querySelector("#add-vehicle-form");
+    console.log("addVehicleForm is ");
+    console.log(addVehicleForm);
+    const formJsonData = buildJsonData(addVehicleForm);
+    console.log('form data is:')
+    console.log(formJsonData);
+
+//     const headersData = buildHeaders();
+//     console.log("In handleAddVehicleSubmit()");
+
+//     fetch("http://localhost:5000/vehicles/", {
+//         method: "POST",
+//         body: JSON.stringify(formJsonData),
+//         headers: headersData
+//     })
+//     .then((response) => response.json())
+//     .then((json) => console.log(json))
+//     .catch(e => console.error(`Caught error: ${e.message}`));
+    
+//    console.log(formJsonData);
+
+    
+    /*WIP: Add POST request code to submit data from the add-vehicle-form.
+    Assignee: Melwin*/
+    
 }
 
 const buildJsonData = (form) => {
