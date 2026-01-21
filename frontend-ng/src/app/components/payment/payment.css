@@ -1,0 +1,30 @@
+.payment-container {
+  padding: 30px;
+  background: #f3f4f6;
+  min-height: 80vh;
+  text-align: center;
+}
+
+.payment-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 300px;
+}
+
+select,
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+}
+
+button {
+  background: #16a34a;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+}

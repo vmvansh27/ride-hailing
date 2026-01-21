@@ -1,0 +1,28 @@
+<h2>My Rides</h2>
+
+<p *ngIf="loading">Loading rides...</p>
+<p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+
+<div *ngFor="let ride of rides" class="ride-card">
+  <p><b>Ride ID:</b> {{ ride.ride_id }}</p>
+  <p><b>Pickup:</b> {{ ride.pickup_location }}</p>
+  <p><b>Drop:</b> {{ ride.drop_location }}</p>
+  <p><b>Status:</b> {{ ride.status }}</p>
+  <p><b>Fare:</b> ₹{{ ride.fare }}</p>
+
+  <!-- PAYMENT -->
+  <button *ngIf="!hasPayment(ride.ride_id)" (click)="goToPayment(ride.ride_id)">Pay Now</button>
+
+  <!-- RATING -->
+  <button
+    *ngIf="hasPayment(ride.ride_id) && !hasRating(ride.ride_id)"
+    (click)="goToRating(ride.ride_id)"
+  >
+    Rate Driver
+  </button>
+
+  <!-- DONE -->
+  <p *ngIf="hasPayment(ride.ride_id) && hasRating(ride.ride_id)" style="color: green">
+    ✔ Ride Completed & Reviewed
+  </p>
+</div>

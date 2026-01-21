@@ -1,0 +1,30 @@
+<div class="ride-container">
+  <div class="ride-card">
+    <h2>Request a Ride</h2>
+
+    <form (ngSubmit)="requestRide()">
+      <input
+        type="text"
+        placeholder="Pickup Location"
+        [(ngModel)]="rideData.pickup_location"
+        name="pickup"
+        required
+      />
+
+      <input
+        type="text"
+        placeholder="Drop Location"
+        [(ngModel)]="rideData.drop_location"
+        name="drop"
+        required
+      />
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Requesting...' : 'Request Ride' }}
+      </button>
+    </form>
+
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>

@@ -116,7 +116,14 @@ Edit:
 ```
 backend/rest/database/config.js
 ```
-
+Create:
+```
+backend/rest/database/credentials.js
+```
+containing the following line with your password:
+```
+export let PASSWD = {Your Password Here};
+```
 ### **4. Start Server**
 ```
 npm start

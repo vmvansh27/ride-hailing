@@ -1,0 +1,17 @@
+<div style="padding: 20px; background: #f0f0f0">
+  <h2>Available Ride Requests</h2>
+
+  <p *ngIf="loading">Loading rides...</p>
+  <p *ngIf="errorMessage" style="color: red">{{ errorMessage }}</p>
+
+  <p>Total rides loaded: {{ rides.length }}</p>
+
+  <div *ngFor="let ride of rides" style="border: 1px solid black; margin: 10px; padding: 10px">
+    <p>Ride ID: {{ ride.ride_id }}</p>
+    <p>Pickup: {{ ride.pickup_location }}</p>
+    <p>Drop: {{ ride.drop_location }}</p>
+    <p>Status: {{ ride.status }}</p>
+
+    <button (click)="acceptRide(ride.ride_id)">Accept Ride</button>
+  </div>
+</div>

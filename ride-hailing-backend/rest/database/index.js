@@ -1,15 +1,15 @@
-const { Sequelize } = require("sequelize");
-const config = require("./config");
+import { Sequelize } from "sequelize";
+import config from "./config.js";
+
 const sequelize = new Sequelize(
     config.DB,
     config.USER,
     config.PASSWORD,
     {
         host: config.HOST,
-        dialect: config.dialect
+        dialect: config.dialect,
+        logging: false
     }
 );
-sequelize.authenticate()
-    .then(() => console.log("Sequelize connected to MySQL"))
-    .catch(err => console.log("Error connecting:", err));
-module.exports = sequelize;
+
+export default sequelize;

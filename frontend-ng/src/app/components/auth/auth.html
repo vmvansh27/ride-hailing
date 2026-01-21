@@ -1,0 +1,61 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="tabs">
+      <button [class.active]="activeTab === 'login'" (click)="switchTab('login')">Login</button>
+      <button [class.active]="activeTab === 'register'" (click)="switchTab('register')">
+        Register
+      </button>
+    </div>
+
+    <!-- LOGIN -->
+    <form *ngIf="activeTab === 'login'" class="form" (ngSubmit)="login()">
+      <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="loginData.password"
+        name="password"
+        required
+      />
+
+      <button type="submit" class="primary-btn">Login</button>
+    </form>
+
+    <!-- REGISTER -->
+    <form *ngIf="activeTab === 'register'" class="form" (ngSubmit)="register()">
+      <input
+        placeholder="Full Name"
+        [(ngModel)]="registerData.full_name"
+        name="full_name"
+        required
+      />
+
+      <input placeholder="Email" [(ngModel)]="registerData.email" name="email" required />
+
+      <input placeholder="Phone" [(ngModel)]="registerData.phone" name="phone" required />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="registerData.password"
+        name="password"
+        required
+      />
+
+      <select [(ngModel)]="registerData.role" name="role">
+        <option value="rider">Rider</option>
+        <option value="driver">Driver</option>
+      </select>
+
+      <input
+        *ngIf="registerData.role === 'driver'"
+        placeholder="License Number"
+        [(ngModel)]="registerData.license_number"
+        name="license_number"
+      />
+
+      <button type="submit" class="primary-btn">Register</button>
+    </form>
+  </div>
+</div>

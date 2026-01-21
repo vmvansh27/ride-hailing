@@ -1,5 +1,17 @@
-const express = require("express");
+// const express = require("express");
+// const router = express.Router();
+// const ratings = require("../controllers/ratings");
+// router.post("/", ratings.rate);
+// module.exports = router;
+
+
+import express from "express";
+import { listRatings, rate } from "../controllers/ratings.js";
+
 const router = express.Router();
-const ratings = require("../controllers/ratings");
-router.post("/", ratings.rate);
-module.exports = router;
+
+// Submit rating
+router.post("/", rate);
+router.get("/", listRatings);
+
+export default router;

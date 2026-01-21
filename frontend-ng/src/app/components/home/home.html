@@ -1,0 +1,48 @@
+<!-- <div class="home-container">
+  <h1>Ride Hailing App</h1>
+
+  <div *ngIf="user; else guest">
+    <h2>Welcome, {{ user.full_name }}</h2>
+    <p>Role: {{ user.role }}</p>
+  </div>
+
+  <ng-template #guest>
+    <h2>Welcome to Ride Hailing App</h2>
+    <p>Please login or register.</p>
+  </ng-template>
+</div> -->
+
+<div class="home-container">
+  <mat-card class="home-card">
+    <h1>🚗 Ride Hailing App</h1>
+
+    <div *ngIf="user; else guest">
+      <h2>Welcome, {{ user.full_name }}</h2>
+      <p class="role">
+        You are logged in as <b>{{ user.role }}</b>
+      </p>
+
+      <div class="buttons">
+        <button mat-raised-button color="primary" routerLink="/my-rides">My Rides</button>
+
+        <button mat-raised-button color="accent" *ngIf="user.role === 'rider'" routerLink="/ride/request">
+          Book Ride
+        </button>
+
+        <button mat-raised-button color="warn" *ngIf="user.role === 'driver'" routerLink="/ride/list">
+          View Requests
+        </button>
+      </div>
+    </div>
+
+    <ng-template #guest>
+      <h2>Move smarter with us</h2>
+      <p class="subtitle">Fast • Safe • Reliable rides</p>
+
+      <div class="buttons">
+        <button mat-raised-button color="primary" routerLink="/auth">Login</button>
+        <button mat-stroked-button color="primary" routerLink="/auth">Register</button>
+      </div>
+    </ng-template>
+  </mat-card>
+</div>
